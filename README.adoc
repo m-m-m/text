@@ -1,0 +1,46 @@
+image:https://m-m-m.github.io/logo.svg[logo,width="150",link="https://m-m-m.github.io"]
+
+image:https://img.shields.io/github/license/m-m-m/text.svg?label=License["Apache License, Version 2.0",link=https://github.com/m-m-m/text/blob/main/LICENSE]
+image:https://github.com/m-m-m/text/actions/workflows/build.yml/badge.svg["Build Status",link="https://github.com/m-m-m/text/actions/workflows/build.yml"]
+
+= mmm-text
+
+image:https://img.shields.io/maven-central/v/io.github.m-m-m/mmm-text.svg?label=Maven%20Central["Maven Central",link=https://search.maven.org/search?q=g:io.github.m-m-m]
+image:https://javadoc.io/badge2/io.github.m-m-m/mmm-text/javadoc.svg["mmm-text JavaDoc", link=https://javadoc.io/doc/io.github.m-m-m/mmm-text]
+
+== mmm-text-ascii
+
+The module `io.github.mmm.text.ascii` (artifactId `mmm-ascii`) provides a efficient conversion from unicode to ASCII.
+https://en.wikipedia.org/wiki/Unicode[Unicode] is an awesome and powerful standard but is also extremely complex.
+This can cause unexpected problems e.g. two `String` values may not be equal even though they are optically and semantically equivalent.
+Just to give one example the character `ä` can also be written as a https://www.compart.com/en/unicode/U+0308[combining diaresis] character followed by an `a`.
+As a result your implementation to compare, search, or otherwise process texts can produce unexpected results.
+Further, when you have a name from arbitrary user-input and you need to use that in a path of the file-system or to derive a business key you may not want to allow any unicode character to avoid problems.
+
+=== Features
+
+This library offers the following features:
+
+* Transformation of any unicode text to a corresponding `String` only containing 7-bit ASCII characters.
+* Highly optimized for performance: ultra fast and low memory footprint due to lazy loading of mappings per code-point high-bytes.
+* Support for simplified transliteration.
+It is not fully compatible to standards like ISO-843, ISO-9:1995, ISO-15919, ISO 11940-2:2007, etc.
+So if you look for accuracy this is the wrong place.
+However, if a "good enough" approach is enough you have found a great solution.
+* Extremely robust due to is simplicity. Any input is accepted and you will get ASCII output.
+
+=== Usage
+
+Maven Dependency:
+```xml
+<dependency>
+  <groupId>io.github.m-m-m</groupId>
+  <artifactId>mmm-text-ascii</artifactId>
+  <version>${mmm.base.version}</version>
+</dependency>
+```
+
+Module Dependency:
+```java
+  requires transitive io.github.mmm.text.ascii;
+```
