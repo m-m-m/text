@@ -20,6 +20,7 @@
 
   <modules>
     <module>ascii</module>
+    <module>hyphenation</module>
   </modules>
 
   <dependencyManagement>
