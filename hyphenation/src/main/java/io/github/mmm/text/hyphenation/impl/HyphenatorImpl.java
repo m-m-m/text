@@ -36,20 +36,34 @@ public class HyphenatorImpl implements Hyphenator {
    * The constructor.
    *
    * @param locale is the {@link #getLocale() locale}.
-   * @param hyphen is the {@link #getHyphen() hyphen-character}.
    * @param patternList is the {@link List} of {@link HyphenationPattern patterns}.
    * @param exceptionList is the list of pre-hyphenated exceptions (e.g. "as-so-ciate").
    */
-  public HyphenatorImpl(Locale locale, String hyphen, List<String> patternList, List<String> exceptionList) {
+  public HyphenatorImpl(Locale locale, List<String> patternList, List<String> exceptionList) {
 
     super();
     this.locale = locale;
-    this.hyphen = hyphen;
+    String hyp = null;
     this.exceptionMap = new HashMap<>(exceptionList.size());
     for (String exception : exceptionList) {
-      HyphenationImpl hypenation = new HyphenationImpl(exception, hyphen);
+      if (hyp == null) {
+        int length = exception.length();
+        for (int i = 0; i < length; i++) {
+          int cp = exception.codePointAt(i);
+          if (!Character.isLetter(cp)) {
+            assert (i > 0);
+            hyp = Character.toString(cp);
+            break;
+          }
+        }
+      }
+      HyphenationImpl hypenation = new HyphenationImpl(exception, hyp);
       this.exceptionMap.put(hypenation.getWord().toString(), hypenation);
     }
+    if (hyp == null) {
+      hyp = HYPHEN_DEFAULT;
+    }
+    this.hyphen = hyp;
     HyphenationPattern[] patternArray = new HyphenationPattern[patternList.size()];
     int maxLength = 2;
     for (int i = 0; i < patternArray.length; i++) {

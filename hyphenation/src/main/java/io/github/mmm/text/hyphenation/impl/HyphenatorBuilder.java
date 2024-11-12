@@ -2,20 +2,19 @@
  * http://www.apache.org/licenses/LICENSE-2.0 */
 package io.github.mmm.text.hyphenation.impl;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.lang.ref.WeakReference;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ConcurrentHashMap;
-
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
 
 import io.github.mmm.base.i18n.LocaleHelper;
 import io.github.mmm.text.hyphenation.Hyphenator;
@@ -28,28 +27,10 @@ import io.github.mmm.text.hyphenation.Hyphenator;
 public class HyphenatorBuilder {
 
   /** @see #createHyphenator(String) */
-  public static final String HYPHENATION_XML_CONFIG_PREFIX = "l10n/io/github/mmm/text/hyphenation/hyphenation";
+  static final String HYPHENATION_CONFIG_PREFIX = "l10n/io/github/mmm/text/hyphenation/";
 
   /** @see #createHyphenator(String) */
-  public static final String HYPHENATION_XML_CONFIG_SUFFIX = ".xml";
-
-  /** The XML root tag ({@code hyphenation}). */
-  private static final String XML_TAG_HYPHENATION = "hyphenation";
-
-  /** The XML attribute for the hyphen character ({@code hyphen}). */
-  private static final String XML_ATR_HYPHEN = "hyphen";
-
-  /** The XML tag for the list of exceptions to hyphenation rules ({@code exceptions}). */
-  private static final String XML_TAG_EXCEPTION_LIST = "exceptions";
-
-  /** The XML tag for the list of patterns ({@code patterns}). */
-  private static final String XML_TAG_PATTERN_LIST = "patterns";
-
-  /** The XML tag for an exception ({@code e}). */
-  private static final String XML_TAG_EXCEPTION = "e";
-
-  /** The XML tag for a pattern ({@code p}). */
-  private static final String XML_TAG_PATTERN = "p";
+  static final String HYPHENATION_CONFIG_SUFIX = ".txt";
 
   /** Cache for {@link #getHyphenator(Locale)}. */
   private final ConcurrentHashMap<String, WeakReference<Hyphenator>> hyphenatorCache;
@@ -110,101 +91,52 @@ public class HyphenatorBuilder {
    */
   protected Hyphenator createHyphenator(String localeInfix) {
 
-    String classpath = HYPHENATION_XML_CONFIG_PREFIX + localeInfix + HYPHENATION_XML_CONFIG_SUFFIX;
-    URL url = Thread.currentThread().getContextClassLoader().getResource(classpath);
-    if (url != null) {
+    String patternsLocation = HYPHENATION_CONFIG_PREFIX + "patterns" + localeInfix + ".txt";
+    URL patternsUrl = Thread.currentThread().getContextClassLoader().getResource(patternsLocation);
+    if (patternsUrl != null) {
+      String exceptionsLocation = HYPHENATION_CONFIG_PREFIX + "exceptions" + localeInfix + ".txt";
+      URL exceptionsUrl = Thread.currentThread().getContextClassLoader().getResource(exceptionsLocation);
       Locale locale = LocaleHelper.fromString(localeInfix);
-      return createHyphenator(locale, url);
+      return createHyphenator(locale, patternsUrl, exceptionsUrl);
     }
     return null;
   }
 
   /**
    * @param locale is the {@link Hyphenator#getLocale() locale}.
-   * @param resource is the {@link URL} to the XML-configuration.
+   * @param patternsUrl is the {@link URL} to the file with the patterns.
+   * @param exceptionsUrl is the {@link URL} to the file with the exceptions.
    * @return the {@link Hyphenator} instance.
    */
-  protected Hyphenator createHyphenator(Locale locale, URL resource) {
+  protected Hyphenator createHyphenator(Locale locale, URL patternsUrl, URL exceptionsUrl) {
 
-    try {
-      SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
-      SAXParser saxParser = saxParserFactory.newSAXParser();
-      XmlHandler handler = new XmlHandler();
-      try (InputStream inputStream = resource.openStream()) {
-        saxParser.parse(inputStream, handler);
-        if (handler.patterns.isEmpty()) {
-          throw new IllegalStateException("No patterns in XML config!");
-        }
-        HyphenatorImpl hyphenator = new HyphenatorImpl(locale, handler.hyphen, handler.patterns, handler.exceptions);
-        return hyphenator;
-      }
-    } catch (Exception e) {
-      throw new IllegalStateException("Error parsing XML from " + resource, e);
-    }
+    List<String> patterns = readRules(patternsUrl, 32_000);
+    List<String> exceptions = readRules(exceptionsUrl, 256);
+    HyphenatorImpl hyphenator = new HyphenatorImpl(locale, patterns, exceptions);
+    return hyphenator;
   }
 
-  private static class XmlHandler extends DefaultHandler {
+  private List<String> readRules(URL url, int capacity) {
 
-    private boolean rootPresent;
-
-    private String hyphen;
-
-    private List<String> patterns;
-
-    private List<String> exceptions;
-
-    private List<String> activeList;
-
-    public XmlHandler() {
-
-      super();
-      this.hyphen = Hyphenator.HYPHEN_DEFAULT;
+    if (url == null) {
+      return Collections.emptyList();
     }
-
-    @Override
-    public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-
-      this.activeList = null;
-      if (!this.rootPresent) {
-        if (!qName.equals(XML_TAG_HYPHENATION)) {
-          throw new IllegalStateException("Invalid root tag '" + qName + "'.");
-        }
-        this.rootPresent = true;
-        String hyp = attributes.getValue(XML_ATR_HYPHEN);
-        if (hyp != null) {
-          assert hyp.length() == 1 : "invalid hyphen character " + hyp;
-          this.hyphen = hyp;
+    List<String> list = new ArrayList<>(capacity);
+    try (InputStream in = url.openStream();
+        Reader reader = new InputStreamReader(in, StandardCharsets.UTF_8);
+        BufferedReader bufferedReader = new BufferedReader(reader)) {
+      while (true) {
+        String line = bufferedReader.readLine();
+        if (line == null) {
+          break;
+        } else if (!line.isEmpty()) {
+          list.add(line);
         }
       }
-      if (qName.equals(XML_TAG_PATTERN)) {
-        this.activeList = this.patterns;
-      } else if (qName.equals(XML_TAG_EXCEPTION)) {
-        this.activeList = this.exceptions;
-      } else if (qName.equals(XML_TAG_PATTERN_LIST)) {
-        if (this.patterns == null) {
-          this.patterns = new ArrayList<>();
-        }
-      } else if (qName.equals(XML_TAG_EXCEPTION_LIST)) {
-        if (this.exceptions == null) {
-          this.exceptions = new ArrayList<>();
-        }
-      }
+    } catch (IOException e) {
+      throw new IllegalStateException("Error parsing hyphenation config from " + url, e);
     }
-
-    @Override
-    public void endElement(String uri, String localName, String qName) throws SAXException {
-
-      this.activeList = null;
-    }
-
-    @Override
-    public void characters(char[] ch, int start, int length) throws SAXException {
-
-      if (this.activeList != null) {
-        this.activeList.add(new String(ch, start, length));
-      }
-    }
-
+    return list;
   }
 
 }
