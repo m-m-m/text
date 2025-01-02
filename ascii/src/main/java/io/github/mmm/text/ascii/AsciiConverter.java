@@ -16,7 +16,6 @@ import io.github.mmm.text.ascii.impl.AsciiConverterImpl;
 public interface AsciiConverter {
 
   /**
-   * @param text the (unicode) {@link String} to convert.
    * @param codePoint the {@link String#codePointAt(int) codePoint} to convert.
    * @return the converted ASCII representation of the given {@link String#codePointAt(int) codePoint}.
    */
