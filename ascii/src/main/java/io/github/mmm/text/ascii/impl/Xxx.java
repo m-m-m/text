@@ -14,7 +14,7 @@ package io.github.mmm.text.ascii.impl;
  * <li>{@code WD_*} for word</li>
  * </ul>
  */
-abstract class Xxx {
+public abstract class Xxx {
 
   // strings
 

@@ -4,7 +4,9 @@
  */
 
 /**
- * Conversion from unicode to ASCII (simplified transliteration) and related features.
+ * Conversion from Unicode to ASCII (simplified transliteration) and related features.
+ *
+ * @see io.github.mmm.text.ascii.AsciiConverter
  */
 module io.github.mmm.text.ascii {
 

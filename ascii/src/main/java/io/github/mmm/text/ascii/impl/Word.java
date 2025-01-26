@@ -5,7 +5,7 @@ package io.github.mmm.text.ascii.impl;
 /**
  * Extends {@link Letters} for a word. Subsequent words will be separated by space.
  */
-class Word extends Chars {
+public class Word extends Chars {
 
   Word(String s) {
 
@@ -18,6 +18,14 @@ class Word extends Chars {
     return Type.TEXT;
   }
 
+  /**
+   * Default part of {@link #append(AsciiBuilder, int, CodePointMapping)} that can be overridden by sub-classes.
+   *
+   * @param builder the {@link AsciiBuilder}.
+   * @param codePoint the original {@link String#codePointAt(int) code point}.
+   * @param next the next {@link CodePointMapping}.
+   * @return an {@link AsciiState} for stateful processing.
+   */
   protected CodePointMapping doAppend(AsciiBuilder builder, int codePoint, CodePointMapping next) {
 
     return super.append(builder, codePoint, next);

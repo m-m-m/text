@@ -5,7 +5,7 @@ package io.github.mmm.text.ascii.impl;
 /**
  * Extends {@link Chars} for multiple latin letters. It typically represents a syllabe or sound (unlike a {@link Word}).
  */
-class Letters extends Chars {
+public class Letters extends Chars {
 
   Letters(String s) {
 
@@ -13,17 +13,17 @@ class Letters extends Chars {
     assert isLetters(s);
   }
 
-  private boolean isLetters(String s) {
+  private boolean isLetters(String string) {
 
-    int len = s.length();
+    int len = string.length();
     if (len < 2) {
-      throw new IllegalArgumentException(s + " - expected at least two letters.");
+      throw new IllegalArgumentException(string + " - expected at least two letters.");
     }
     for (int i = 0; i < len; i++) {
-      int codePoint = s.codePointAt(i);
+      int codePoint = string.codePointAt(i);
       if (!isLatinLetter(codePoint)) {
         throw new IllegalArgumentException(
-            s + " - at index " + i + " illegal code point 0x" + Long.toHexString(codePoint));
+            string + " - at index " + i + " illegal code point 0x" + Long.toHexString(codePoint));
       }
     }
     return true;

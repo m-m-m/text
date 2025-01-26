@@ -5,7 +5,7 @@ package io.github.mmm.text.ascii.impl;
 /**
  * Common factors used in physics, etc.
  */
-class Factor extends Fraction {
+public class Factor extends Fraction {
 
   static final Factor TERA = new Factor(1_000_000_000_000L, 1, "T", "tera");
 

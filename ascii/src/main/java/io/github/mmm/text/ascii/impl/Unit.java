@@ -5,7 +5,7 @@ package io.github.mmm.text.ascii.impl;
 /**
  * Extends {@link Letters} for a (physical) unit.
  */
-class Unit extends StructuredWord {
+public class Unit extends StructuredWord {
 
   static final Unit ACRE = new Unit("a", "acre");
 

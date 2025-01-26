@@ -5,7 +5,7 @@ package io.github.mmm.text.ascii.impl;
 /**
  * {@link CodePointMapping} for a numeric value sign.
  */
-interface Number extends CodePointMapping {
+public interface Number extends CodePointMapping {
 
   /**
    * @return the numerator as {@code long}. The actual value is {@link #getNumerator()}/{@link #getDenominator()}.

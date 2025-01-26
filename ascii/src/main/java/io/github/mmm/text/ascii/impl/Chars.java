@@ -5,7 +5,7 @@ package io.github.mmm.text.ascii.impl;
 /**
  * Implementation of {@link CodePointMapping} for static {@link String}.
  */
-class Chars extends AbstractCodePointMapping {
+public class Chars extends AbstractCodePointMapping {
 
   final String s;
 

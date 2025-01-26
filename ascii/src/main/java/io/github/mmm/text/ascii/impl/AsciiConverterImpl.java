@@ -4,6 +4,7 @@ package io.github.mmm.text.ascii.impl;
 
 import java.util.PrimitiveIterator.OfInt;
 
+import io.github.mmm.base.text.CaseConversion;
 import io.github.mmm.text.ascii.AsciiConverter;
 import io.github.mmm.text.ascii.AsciiConverterConfig;
 
@@ -25,13 +26,23 @@ public class AsciiConverterImpl implements AsciiConverter {
   }
 
   @Override
-  public String convert(int codePoint) {
+  public String convert(int codePoint, AsciiConverterConfig config) {
 
     CodePointMapping asc = getAsc(codePoint);
     if (asc == null) {
       return null;
     }
-    return asc.toString();
+    String string;
+    if (config.useLongForms()) {
+      string = asc.asStringLong();
+    } else {
+      string = asc.asString();
+    }
+    CaseConversion cc = config.caseConversion();
+    if (cc != CaseConversion.ORIGINAL_CASE) {
+      string = cc.convert(string);
+    }
+    return string;
   }
 
   private static CodePointMapping getAsc(int codePoint) {
@@ -251,8 +262,10 @@ public class AsciiConverterImpl implements AsciiConverter {
         next = current.append(builder, codePoint, next);
       }
     }
-    // since text is not empty, we entered the while loop, next is the last mapping to process due to buffering.
-    next.append(builder, codePoint, null);
+    if (next != null) {
+      next.append(builder, codePoint, null);
+      // } else { fail(); } // since text is not empty, we entered the while loop, and next can never be null.
+    }
     return builder.getAscii();
   }
 

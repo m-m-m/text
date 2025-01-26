@@ -5,9 +5,9 @@ package io.github.mmm.text.ascii.impl;
 /**
  * State for {@link AsciiConverterImpl}.
  *
- * @see CodePointMapping#append(AsciiBuilder, int)
+ * @see CodePointMapping#append(AsciiBuilder, int, CodePointMapping)
  */
-class AsciiBuilder {
+public class AsciiBuilder {
 
   final StringBuilder sb;
 

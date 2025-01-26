@@ -5,7 +5,7 @@ package io.github.mmm.text.ascii.impl;
 /**
  * Implementation of {@link CodePointMapping} for static {@link Character}.
  */
-class Char extends AbstractCodePointMapping {
+public class Char extends AbstractCodePointMapping {
 
   // other non-letters
   static final Char TAB = new Char('\t');

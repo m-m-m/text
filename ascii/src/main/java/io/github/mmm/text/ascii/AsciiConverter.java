@@ -5,13 +5,16 @@ package io.github.mmm.text.ascii;
 import io.github.mmm.text.ascii.impl.AsciiConverterImpl;
 
 /**
- * {@link AsciiConverter} converts Unicode to simple 7-bit ASCII characters. It strips diacritic marks and transliterates non-Latin letters and glyphs to ASCII.
- * It is optimized for performance and does not implement perfectly correct transliteration (e.g. it has no state to transliterate a code-point dependening on
- * its predecessors).<br>
- * However, it is very helpful to decode strings for use-cases like indexing and searching or if you want to build a {@link String} to be used for restricted
- * environments (names of files, folders, etc.) where special characters could cause problems.
+ * {@link AsciiConverter} converts Unicode to simple 7-bit ASCII characters. It strips diacritic marks and
+ * transliterates non-Latin letters and glyphs to ASCII. It is optimized for performance and does not implement
+ * perfectly correct transliteration (e.g. it has no state to transliterate a code-point dependening on its
+ * predecessors).<br>
+ * However, it is very helpful to decode strings for use-cases like indexing and searching or if you want to build a
+ * {@link String} to be used for restricted environments (names of files, folders, etc.) where special characters could
+ * cause problems.
  *
  * @since 1.0.0
+ * @see java.text.Normalizer
  */
 public interface AsciiConverter {
 
@@ -19,7 +22,17 @@ public interface AsciiConverter {
    * @param codePoint the {@link String#codePointAt(int) codePoint} to convert.
    * @return the converted ASCII representation of the given {@link String#codePointAt(int) codePoint}.
    */
-  String convert(int codePoint);
+  default String convert(int codePoint) {
+
+    return convert(codePoint, AsciiConverterConfig.of());
+  }
+
+  /**
+   * @param codePoint the {@link String#codePointAt(int) codePoint} to convert.
+   * @param config the {@link AsciiConverterConfig}.
+   * @return the converted ASCII representation of the given {@link String#codePointAt(int) codePoint}.
+   */
+  String convert(int codePoint, AsciiConverterConfig config);
 
   /**
    * @param text the (unicode) {@link CharSequence} to convert.

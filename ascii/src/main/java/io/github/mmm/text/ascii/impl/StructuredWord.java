@@ -6,7 +6,7 @@ package io.github.mmm.text.ascii.impl;
  * Extends {@link Word} for a structured term that has a {@link #asStringLong() long form} where as {@link #asString()}
  * typically is an abbreviation.
  */
-class StructuredWord extends Word {
+public class StructuredWord extends Word {
 
   final String full;
 

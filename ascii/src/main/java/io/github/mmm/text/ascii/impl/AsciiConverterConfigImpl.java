@@ -12,6 +12,7 @@ import io.github.mmm.text.ascii.AsciiConverterConfig;
  */
 public final class AsciiConverterConfigImpl implements AsciiConverterConfig {
 
+  /** The default instance. */
   public static final AsciiConverterConfigImpl DEFAULT = new AsciiConverterConfigImpl();
 
   final CaseConversion caseConversion;
