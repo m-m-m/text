@@ -27,7 +27,7 @@
     <dependencies>
       <dependency>
         <groupId>${project.groupId}</groupId>
-        <artifactId>mmm-base-parent</artifactId>
+        <artifactId>mmm-scanner-parent</artifactId>
         <version>${project.version}</version>
         <type>pom</type>
         <scope>import</scope>
@@ -35,7 +35,12 @@
       <!-- own modules -->
       <dependency>
         <groupId>${project.groupId}</groupId>
-        <artifactId>mmm-ascii</artifactId>
+        <artifactId>mmm-text-ascii</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>mmm-text-hyphenation</artifactId>
         <version>${project.version}</version>
       </dependency>
     </dependencies>
