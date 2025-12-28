@@ -13,7 +13,7 @@ import io.github.mmm.text.hyphenation.impl.HyphenationImpl;
 /**
  * Test of {@link Hyphenator}.
  */
-public class HyphenatorTest extends Assertions {
+class HyphenatorTest extends Assertions {
 
   private Hyphenator getHyphenator(Locale locale) {
 
@@ -32,7 +32,7 @@ public class HyphenatorTest extends Assertions {
   @ValueSource(strings = { "Wort", "ein", "o", "Zer-streu-ung", "Be-werk-stel-li-gung", "Sil-ben-tren-nung",
   "selb-stän-dig", "Ein-ge-ständ-nis", "Ver-un-si-che-rung", "Aus-sen-dung", "Au-to-rin", "Ak-ten-ord-ner", "Ar-ma-da",
   "Darm-ein-lauf", "Beige" })
-  public void testDe(String word) {
+  void testDe(String word) {
 
     Hyphenator hyphenator = getHyphenator(Locale.GERMANY);
     assertThat(hyphenator.getLocale()).isEqualTo(Locale.GERMAN);
@@ -51,7 +51,7 @@ public class HyphenatorTest extends Assertions {
   // I would expect "re-ci-pro-ci-ty" but web resources say "re-ciproc-i-ty" or "reci-procity"
   // https://www.hyphenator.net/en/word/reciprocity
   // https://www.hyphenation24.com/word/reciprocity/
-  public void testEnUk(String word) {
+  void testEnUk(String word) {
 
     Hyphenator hyphenator = getHyphenator(Locale.UK);
     assertThat(hyphenator.getLocale()).isEqualTo(Locale.ROOT);
@@ -63,7 +63,7 @@ public class HyphenatorTest extends Assertions {
    */
   @ParameterizedTest
   @ValueSource(strings = { "Pa-la-bra", "a", "Se-pa-ra-ción" })
-  public void testEs(String word) {
+  void testEs(String word) {
 
     Locale locale = Locale.forLanguageTag("es");
     Hyphenator hyphenator = getHyphenator(locale);
@@ -76,7 +76,7 @@ public class HyphenatorTest extends Assertions {
    */
   @ParameterizedTest
   @ValueSource(strings = { "Mot", "un", "Cé-sure", "dé-vé-rouiller" })
-  public void testFr(String word) {
+  void testFr(String word) {
 
     Hyphenator hyphenator = getHyphenator(Locale.FRANCE);
     assertThat(hyphenator.getLocale()).isEqualTo(Locale.FRENCH);

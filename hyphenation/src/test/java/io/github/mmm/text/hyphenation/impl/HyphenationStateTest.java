@@ -8,10 +8,10 @@ import org.junit.jupiter.api.Test;
 /**
  * Test of {@link HyphenationState}.
  */
-public class HyphenationStateTest extends Assertions {
+class HyphenationStateTest extends Assertions {
 
   @Test
-  public void testGetHashCodes() {
+  void testGetHashCodes() {
 
     // arrange
     String word = "construction";
@@ -33,7 +33,7 @@ public class HyphenationStateTest extends Assertions {
   }
 
   @Test
-  public void testState() {
+  void testState() {
 
     // arrange
     HyphenationState state = new HyphenationState("Construction", "-", 9);

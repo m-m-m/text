@@ -12,13 +12,13 @@ import io.github.mmm.base.text.CaseConversion;
 /**
  * Test of {@link AsciiConverter}.
  */
-public class AsciiConverterTest extends Assertions {
+class AsciiConverterTest extends Assertions {
 
   /**
    * Test {@link AsciiConverter#convert(CharSequence)} and its variants with pure 7-Bit ASCII text.
    */
   @Test
-  public void testAscii() {
+  void testAscii() {
 
     // arrange
     String text = "abcdefghijklmnopqrstuvwxyz\nABCDEFGHIJKLMNOPQRSTUVWXYZ\t0123456789+-([{}])/*#~$'\".,;:!?";
@@ -37,7 +37,7 @@ public class AsciiConverterTest extends Assertions {
    * Test {@link AsciiConverter#convert(CharSequence)} for German transliteration (exact resolution of Umlauts).
    */
   @Test
-  public void testGerman() {
+  void testGerman() {
 
     // arrange
     String text = "Diese Komponente ermöglicht eine einfache Transliteration von Unicode nach ASCII ohne übermäßige Komplexität.\n"
@@ -53,7 +53,7 @@ public class AsciiConverterTest extends Assertions {
    * Test {@link AsciiConverter#convert(CharSequence)} for German transliteration (exact resolution of Umlauts).
    */
   @Test
-  public void testFrench() {
+  void testFrench() {
 
     // arrange
     String text = "Ce composant permet une translittération facile d'Unicode vers ASCII sans complexité excessive.\n"
@@ -69,7 +69,7 @@ public class AsciiConverterTest extends Assertions {
    * Test {@link AsciiConverter#convert(CharSequence)} for Danish transliteration (exact resolution of Umlauts).
    */
   @Test
-  public void testDanish() {
+  void testDanish() {
 
     // arrange
     String text = "Denne komponent hjælper med let translitteration fra Unicode til ASCII uden overdreven kompleksitet.\n"
@@ -85,7 +85,7 @@ public class AsciiConverterTest extends Assertions {
    * Test {@link AsciiConverter#convert(CharSequence)} for Swedish transliteration (exact resolution of Umlauts).
    */
   @Test
-  public void testSwedish() {
+  void testSwedish() {
 
     // arrange
     String text = "Denna komponent möjliggör enkel translitterering från Unicode till ASCII utan onödig komplexitet.\n"
@@ -101,7 +101,7 @@ public class AsciiConverterTest extends Assertions {
    * Test {@link AsciiConverter#convert(CharSequence)} for Norwegian transliteration (exact resolution of Umlauts).
    */
   @Test
-  public void testNorwegian() {
+  void testNorwegian() {
 
     // arrange
     String text = "Denne komponenten muliggjør enkel translitterasjon fra Unicode til ASCII uten unødig kompleksitet.\n"
@@ -117,7 +117,7 @@ public class AsciiConverterTest extends Assertions {
    * Test {@link AsciiConverter#convert(CharSequence)} for Hungarian transliteration.
    */
   @Test
-  public void testHungarian() {
+  void testHungarian() {
 
     // arrange
     String text = "Ez az összetevő lehetővé teszi az egyszerű átírást Unicode-ról ASCII-re, felesleges bonyolultság nélkül.\n"
@@ -133,7 +133,7 @@ public class AsciiConverterTest extends Assertions {
    * Test {@link AsciiConverter#convert(CharSequence)} for Greek transliteration (not exact but close to ISO-843).
    */
   @Test
-  public void testGreek() {
+  void testGreek() {
 
     // arrange
     String text = "Αυτό το στοιχείο επιτρέπει την εύκολη μεταγραφή από Unicode σε ASCII χωρίς αδικαιολόγητη πολυπλοκότητα.\n"
@@ -150,7 +150,7 @@ public class AsciiConverterTest extends Assertions {
    * ISO-9:1995).
    */
   @Test
-  public void testRussian() {
+  void testRussian() {
 
     // arrange
     String text = "Этот компонент позволяет легко транслитерировать из Unicode в ASCII без излишней сложности.\n"
@@ -170,7 +170,7 @@ public class AsciiConverterTest extends Assertions {
    * Test {@link AsciiConverter#convert(CharSequence)} for Vietnamese transliteration.
    */
   @Test
-  public void testVietnamese() {
+  void testVietnamese() {
 
     // arrange
     String text = "Thành phần này cho phép chuyển ngữ dễ dàng từ Unicode sang ASCII mà không quá phức tạp.\n"
@@ -186,7 +186,7 @@ public class AsciiConverterTest extends Assertions {
    * Test {@link AsciiConverter#convert(CharSequence)} for Jiddish transliteration.
    */
   @Test
-  public void testJiddish() {
+  void testJiddish() {
 
     // arrange
     String text = "דער קאָמפּאָנענט אַלאַוז גרינג טראַנסליטעראַטיאָן פון אוניקאָד צו ASCII אָן יבעריק קאַמפּלעקסיטי.\n"
@@ -206,7 +206,7 @@ public class AsciiConverterTest extends Assertions {
    * Test {@link AsciiConverter#convert(CharSequence)} for Thai transliteration.
    */
   @Test
-  public void testThai() {
+  void testThai() {
 
     // arrange
     String text = "ส่วนประกอบนี้ช่วยให้สามารถทับศัพท์จาก Unicode ไปเป็น ASCII ได้อย่างง่ายดายโดยไม่ซับซ้อนเกินไป\n"
@@ -226,7 +226,7 @@ public class AsciiConverterTest extends Assertions {
    * Test {@link AsciiConverter#convert(CharSequence)} for Chinese (simplified) transliteration.
    */
   @Test
-  public void testChinese() {
+  void testChinese() {
 
     // arrange
     String text = "该组件允许轻松地从 Unicode 音译到 ASCII，而不会产生过度的复杂性。\n" //
