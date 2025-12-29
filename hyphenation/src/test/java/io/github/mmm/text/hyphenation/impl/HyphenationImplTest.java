@@ -11,13 +11,13 @@ import io.github.mmm.text.hyphenation.Hyphenator;
 /**
  * This is the test-case for {@link HyphenationImpl}.
  */
-public class HyphenationImplTest extends Assertions {
+class HyphenationImplTest extends Assertions {
 
   /**
    * This method performs general tests on {@link HyphenationImpl}, especially {@link HyphenationImpl#toString()}.
    */
   @Test
-  public void testAll() {
+  void testAll() {
 
     verify("everybody", "everybody");
     verify("everybody", "ev-ery-body", 2, 5);
